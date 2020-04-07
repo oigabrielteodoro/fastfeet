@@ -17,9 +17,10 @@ import {
 
 import ShimmerEffect from '~/components/Shimmer';
 
-import { Actions, Table, TableItem, Badge, ActionList, Modal } from './styles';
-
 import api from '~/services/api';
+import dateFormat from '~/util/dateFormat';
+
+import { Actions, Table, TableItem, Badge, ActionList, Modal } from './styles';
 
 export default function Dashboard() {
   const [orders, setOrders] = useState([]);
@@ -212,7 +213,17 @@ export default function Dashboard() {
                       Visualizar
                     </button>
 
-                    <Link to="/edit">
+                    <Link
+                      to={{
+                        pathname: '/orders/edit',
+                        state: {
+                          id: order.id,
+                          product: order.product,
+                          recipient: order.recipient,
+                          deliveryman: order.deliveryman,
+                        },
+                      }}
+                    >
                       <FiEdit color="#4D85EE" size={16} />
                       Editar
                     </Link>
@@ -250,10 +261,19 @@ export default function Dashboard() {
                   <strong>Datas</strong>
                   <strong>
                     Retirada:{' '}
-                    <span>{order.dates.start && order.dates.start}</span>
+                    <span>
+                      {order.dates.start
+                        ? dateFormat(order.dates.start)
+                        : 'A encomenda ainda não foi retirada.'}
+                    </span>
                   </strong>
                   <strong>
-                    Entrega: <span>{order.dates.end && order.dates.end}</span>
+                    Entrega:{' '}
+                    <span>
+                      {order.dates.end
+                        ? dateFormat(order.dates.end)
+                        : 'A encomenda ainda não foi entregue'}
+                    </span>
                   </strong>
                   {order.signature && (
                     <>

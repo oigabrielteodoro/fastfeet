@@ -15,11 +15,35 @@ export default function admin(state = INITIAL_STATE, action) {
         draft.loading = true;
         break;
       }
+      case '@admin/CREATE_ORDER_REQUEST': {
+        draft.loading = true;
+        break;
+      }
+      case '@admin/UPDATE_ORDER_REQUEST': {
+        draft.loading = true;
+        break;
+      }
+      case '@admin/UPDATE_DELIVERYMEN_REQUEST': {
+        draft.loading = true;
+        break;
+      }
+      case '@admin/UPDATE_RECIPIENT_REQUEST': {
+        draft.loading = true;
+        break;
+      }
       case '@admin/CREATE_SUCCESS': {
         draft.loading = false;
         break;
       }
       case '@admin/CREATE_FAILURE': {
+        draft.loading = false;
+        break;
+      }
+      case '@admin/UPDATE_SUCCESS': {
+        draft.loading = false;
+        break;
+      }
+      case '@admin/UPDATE_FAILURE': {
         draft.loading = false;
         break;
       }

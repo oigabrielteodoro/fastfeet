@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
@@ -13,7 +13,7 @@ import api from '~/services/api';
 
 import { Header, Content } from './styles';
 
-import { createOrderRequest } from '~/store/modules/admin/actions';
+import { updateOrderRequest } from '~/store/modules/admin/actions';
 
 const schema = Yup.object().shape({
   product: Yup.string().required('O nome do produto é obrigatório'),
@@ -22,14 +22,32 @@ const schema = Yup.object().shape({
 });
 
 export default function CreateOrders() {
-  const [recipient, setRecipient] = useState(null);
-  const [deliveryman, setDeliveryman] = useState(null);
+  const location = useLocation();
+
+  const [recipient, setRecipient] = useState(location.state.recipient.name);
+  const [deliveryman, setDeliveryman] = useState(
+    location.state.deliveryman.name
+  );
 
   const dispatch = useDispatch();
   const loading = useSelector(state => state.admin.loading);
 
+  const initialData = {
+    product: location.state.product,
+    recipient_id: {
+      label: location.state.recipient.name,
+      value: location.state.recipient.id,
+    },
+    deliveryman_id: {
+      label: location.state.deliveryman.name,
+      value: location.state.deliveryman.id,
+    },
+  };
+
   async function handleSubmit({ product }) {
-    dispatch(createOrderRequest(product, deliveryman, recipient));
+    const { id } = location.state;
+
+    dispatch(updateOrderRequest(id, product, deliveryman, recipient));
   }
 
   async function loadData(inputValue, path) {
@@ -54,13 +72,7 @@ export default function CreateOrders() {
   return (
     <>
       <Loader loading={loading} />
-      <Form
-        schema={schema}
-        initialData={{
-          product: '',
-        }}
-        onSubmit={handleSubmit}
-      >
+      <Form schema={schema} initialData={initialData} onSubmit={handleSubmit}>
         <Header>
           <h1>Cadastro de encomendas</h1>
 

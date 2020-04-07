@@ -112,7 +112,21 @@ export default function Recipients() {
                   </Badge>
 
                   <ActionList visible={recipient.visible}>
-                    <Link to="/edit">
+                    <Link
+                      to={{
+                        pathname: '/recipients/edit',
+                        state: {
+                          id: recipient.id,
+                          name: recipient.name,
+                          street: recipient.street,
+                          city: recipient.city,
+                          uf: recipient.uf,
+                          number: recipient.number,
+                          zipcode: recipient.zipcode,
+                          complement: recipient.complement,
+                        },
+                      }}
+                    >
                       <FiEdit color="#4D85EE" size={16} />
                       Editar
                     </Link>

@@ -11,6 +11,8 @@ import {
   FiTrash2,
 } from 'react-icons/fi';
 
+import ShimmerEffect from '~/components/Shimmer';
+
 import { Actions, Table, TableItem, Badge, ActionList } from './styles';
 
 import api from '~/services/api';
@@ -18,10 +20,13 @@ import api from '~/services/api';
 export default function Deliverymen() {
   const [deliverymen, setDeliverymen] = useState([]);
   const [inputSearch, setInputSearch] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function loadDeliverymen() {
       try {
+        setLoading(true);
+
         const response = await api.get('deliverymen', {
           params: {
             name: inputSearch,
@@ -34,6 +39,7 @@ export default function Deliverymen() {
         }));
 
         setDeliverymen(data);
+        setLoading(false);
       } catch (err) {
         toast.error('Ocorreu um erro interno.');
       }
@@ -99,16 +105,32 @@ export default function Deliverymen() {
               <TableItem key={deliveryman.id}>
                 <td>#{deliveryman.id}</td>
                 <td>
-                  <img
-                    src={
-                      deliveryman.avatar.url ||
-                      'https://api.adorable.io/avatars/35/abott@adorable.png'
-                    }
-                    alt="Avatar"
-                  />
+                  {loading ? (
+                    <ShimmerEffect type="image" />
+                  ) : (
+                    <img
+                      src={
+                        deliveryman.avatar.url ||
+                        'https://api.adorable.io/avatars/35/abott@adorable.png'
+                      }
+                      alt="Avatar"
+                    />
+                  )}
                 </td>
-                <td>{deliveryman.name}</td>
-                <td>{deliveryman.email}</td>
+                <td>
+                  {loading ? (
+                    <ShimmerEffect width={50} height={16} />
+                  ) : (
+                    deliveryman.name
+                  )}
+                </td>
+                <td>
+                  {loading ? (
+                    <ShimmerEffect width={150} height={16} />
+                  ) : (
+                    deliveryman.email
+                  )}
+                </td>
                 <td>
                   <Badge
                     onClick={() =>
@@ -119,7 +141,17 @@ export default function Deliverymen() {
                   </Badge>
 
                   <ActionList visible={deliveryman.visible}>
-                    <Link to="/edit">
+                    <Link
+                      to={{
+                        pathname: '/deliverymen/edit',
+                        state: {
+                          id: deliveryman.id,
+                          name: deliveryman.name,
+                          email: deliveryman.email,
+                          avatar: deliveryman.avatar,
+                        },
+                      }}
+                    >
                       <FiEdit color="#4D85EE" size={16} />
                       Editar
                     </Link>

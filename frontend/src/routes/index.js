@@ -13,6 +13,10 @@ import CreateOrders from '~/pages/Orders/Create';
 import CreateRecipients from '~/pages/Recipients/Create';
 import CreateDeliverymen from '~/pages/Deliverymen/Create';
 
+import EditOrders from '~/pages/Orders/Edit';
+import EditRecipients from '~/pages/Recipients/Edit';
+import EditDeliverymen from '~/pages/Deliverymen/Edit';
+
 export default function Routes() {
   return (
     <Switch>
@@ -31,6 +35,10 @@ export default function Routes() {
         component={CreateDeliverymen}
         isEditor
       />
+
+      <Route path="/orders/edit" component={EditOrders} isEditor />
+      <Route path="/recipients/edit" component={EditRecipients} isEditor />
+      <Route path="/deliverymen/edit" component={EditDeliverymen} isEditor />
     </Switch>
   );
 }

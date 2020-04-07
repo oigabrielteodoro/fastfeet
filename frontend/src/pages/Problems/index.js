@@ -52,13 +52,13 @@ export default function Problems() {
 
   async function handleDelete(id) {
     try {
-      await api.delete(`/problems/${id}`);
+      await api.delete(`/problems/${id}/cancel-delivery`);
 
-      setProblems(problems.filter(problem => problem.id !== id));
-
-      toast.success('Entregador excluido com sucesso.');
+      toast.success('Encomenda cancelada');
     } catch (err) {
-      toast.error('Ocorreu um erro interno.');
+      toast.error(
+        'Algo deu errado, verifique se esta encomenda já foi retirada por um entregador!'
+      );
     }
   }
 
@@ -121,7 +121,7 @@ export default function Problems() {
                       onClick={() => handleDelete(problem.id)}
                     >
                       <FiTrash2 color="#DE3B3B" size={16} />
-                      Excluir
+                      Cancelar encomenda
                     </button>
                   </ActionList>
                 </td>

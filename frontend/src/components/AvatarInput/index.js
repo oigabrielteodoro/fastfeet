@@ -6,7 +6,7 @@ import api from '~/services/api';
 import { Container } from './styles';
 
 export default function AvatarInput() {
-  const { defaultValue, registerField } = useField('avatar');
+  const { defaultValue, registerField } = useField('avatar_id');
 
   const [file, setFile] = useState(defaultValue && defaultValue.id);
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);

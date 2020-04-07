@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
@@ -9,32 +9,40 @@ import { FiArrowLeft, FiCheck } from 'react-icons/fi';
 import Loader from '~/components/Loader';
 import AvatarInput from '~/components/AvatarInput';
 
-import { Header, Content } from './styles';
+import { Header, Content } from '../Create/styles';
 
-import { createDeliverymenRequest } from '~/store/modules/admin/actions';
+import { updateDeliverymenRequest } from '~/store/modules/admin/actions';
 
 const schema = Yup.object().shape({
-  name: Yup.string().required('O nome é obrigatório'),
-  email: Yup.string()
-    .email('Insira um e-mail válido')
-    .required('O e-mail é obrigatório'),
-  avatar_id: Yup.string().required('O avatar é obrigatório'),
+  name: Yup.string(),
+  email: Yup.string().email('Insira um e-mail válido'),
+  avatar_id: Yup.string(),
 });
 
-export default function CreateDeliverymen() {
+export default function EditDeliverymen() {
+  const location = useLocation();
+
   const dispatch = useDispatch();
   const loading = useSelector(state => state.admin.loading);
 
+  const initialData = {
+    name: location.state.name,
+    email: location.state.email,
+    avatar_id: location.state.avatar,
+  };
+
   async function handleSubmit({ name, email, avatar_id }) {
-    dispatch(createDeliverymenRequest(name, email, avatar_id));
+    const { id } = location.state;
+
+    dispatch(updateDeliverymenRequest(id, name, email, avatar_id));
   }
 
   return (
     <>
       <Loader loading={loading} />
-      <Form schema={schema} initialData={{}} onSubmit={handleSubmit}>
+      <Form schema={schema} initialData={initialData} onSubmit={handleSubmit}>
         <Header>
-          <h1>Cadastro de entregadores</h1>
+          <h1>Edição de entregadores</h1>
 
           <div>
             <Link to="/deliverymen">

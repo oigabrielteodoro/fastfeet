@@ -159,7 +159,7 @@ export const Badge = styled.button`
 
 export const ActionList = styled.ul`
   position: absolute;
-  width: 150px;
+  width: 200px;
   left: calc(90% - 66px);
   box-shadow: 0px 0px 2px #00000026;
   z-index: 2;
